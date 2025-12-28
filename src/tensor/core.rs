@@ -1,4 +1,4 @@
-struct Tensor {
+pub struct Tensor {
     data: Vec<f32>,
     shape: Vec<usize>,
     stride: Vec<usize>
@@ -7,6 +7,19 @@ struct Tensor {
 
 
 impl Tensor {
+    pub fn shape(&self) -> &[usize]{
+        &self.shape
+    }
+
+    pub fn data(&self) -> &[f32]{
+        &self.data
+    }
+
+
+    pub fn stride(&self) -> &[usize]{
+        &self.stride
+    }
+
     fn to_stride(shape: &[usize])-> Vec<usize>{
         let mut stride = vec![0; shape.len()];
 
@@ -102,10 +115,6 @@ mod tests {
         let tens = Tensor::new(vec![], vec![0]);
         assert_eq!(tens.data.len(), 0);
     }
-
-    // ============================
-    // New tests for `set` method
-    // ============================
 
     #[test]
     fn test_set_and_get() {
