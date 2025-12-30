@@ -90,7 +90,7 @@ mod tests {
     use super::*;
 
     #[test]
-    pub fn test_add_tensors_rank2(){
+    fn test_add_tensors_rank2(){
         let a = Tensor::new(vec![4.0, 3.0, 2.0, 1.0], vec![2, 2]);
         let b = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![2, 2]);
 
@@ -102,7 +102,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    pub fn test_add_tensors_mismatch(){
+    fn test_add_tensors_mismatch(){
         let a = Tensor::new(vec![4.0, 3.0, 2.0, 1.0], vec![2, 2]);
         let b = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![1, 4]);
 
@@ -111,7 +111,7 @@ mod tests {
 
 
     #[test]
-    pub fn test_sub_tensors_rank2(){
+    fn test_sub_tensors_rank2(){
         let a = Tensor::new(vec![4.0, 3.0, 2.0, 1.0], vec![2, 2]);
         let b = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![2, 2]);
 
@@ -123,7 +123,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    pub fn test_dif_tensors_mismatch(){
+    fn test_dif_tensors_mismatch(){
         let a = Tensor::new(vec![4.0, 3.0, 2.0, 1.0], vec![2, 2]);
         let b = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![1, 4]);
 
@@ -131,7 +131,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_add_tensors_1d() {
+    fn test_add_tensors_1d() {
         let a = Tensor::new(vec![1.0, 2.0, 3.0], vec![3]);
         let b = Tensor::new(vec![4.0, 5.0, 6.0], vec![3]);
 
@@ -141,7 +141,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_sub_tensors_1d() {
+    fn test_sub_tensors_1d() {
         let a = Tensor::new(vec![5.0, 7.0, 9.0], vec![3]);
         let b = Tensor::new(vec![1.0, 2.0, 3.0], vec![3]);
 
@@ -151,7 +151,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_dot_product_2x2() {
+    fn test_dot_product_2x2() {
         let a = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![2, 2]);
         let b = Tensor::new(vec![5.0, 6.0, 7.0, 8.0], vec![2, 2]);
 
@@ -161,7 +161,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_dot_product_rectangular() {
+    fn test_dot_product_rectangular() {
         let a = Tensor::new(vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0], vec![2, 3]);
         let b = Tensor::new(vec![7.0, 8.0, 9.0, 10.0, 11.0, 12.0], vec![3, 2]);
 
@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    pub fn test_dot_product_mismatch_inner() {
+    fn test_dot_product_mismatch_inner() {
         let a = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![2, 2]);
         let b = Tensor::new(vec![5.0, 6.0, 7.0], vec![3, 1]);
 
@@ -180,7 +180,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_add_empty_tensors() {
+    fn test_add_empty_tensors() {
         let a = Tensor::new(vec![], vec![0]);
         let b = Tensor::new(vec![], vec![0]);
 
@@ -190,7 +190,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_sub_single_element() {
+    fn test_sub_single_element() {
         let a = Tensor::new(vec![42.0], vec![1]);
         let b = Tensor::new(vec![2.0], vec![1]);
 
@@ -200,7 +200,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_mul_tensors_rank2() {
+    fn test_mul_tensors_rank2() {
         let a = Tensor::new(vec![1.0, 2.0, 3.0, 4.0], vec![2, 2]);
         let b = Tensor::new(vec![5.0, 6.0, 7.0, 8.0], vec![2, 2]);
 
@@ -210,7 +210,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_mul_single_element() {
+    fn test_mul_single_element() {
         let a = Tensor::new(vec![3.0], vec![1]);
         let b = Tensor::new(vec![7.0], vec![1]);
 
@@ -220,7 +220,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_mul_empty_tensors() {
+    fn test_mul_empty_tensors() {
         let a = Tensor::new(vec![], vec![0]);
         let b = Tensor::new(vec![], vec![0]);
 
@@ -230,7 +230,7 @@ mod tests {
     }
 
     #[test]
-    pub fn test_add_3d_tensor() {
+    fn test_add_3d_tensor() {
         let a = Tensor::new(vec![1.0,2.0,3.0,4.0,5.0,6.0], vec![2,1,3]);
         let b = Tensor::new(vec![6.0,5.0,4.0,3.0,2.0,1.0], vec![2,1,3]);
 
