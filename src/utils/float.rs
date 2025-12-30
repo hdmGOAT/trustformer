@@ -40,7 +40,16 @@ pub fn safe_div(a: f32, b: f32, eps: f32) -> Option<f32> {
 }
 
 pub fn stable_sum(values: &[f32]) -> f32 {
-    todo!()
+    let mut sum: f32 = 0.0;
+    let mut comp: f32 = 0.0;
+
+    for &val in values {
+        let y = val - comp;
+        let t = sum + y;
+        comp = (t - sum) - y;
+        sum = t;
+    }
+    sum
 }
 
 pub fn tensor_is_finite(t: &Tensor) -> bool {
@@ -49,16 +58,39 @@ pub fn tensor_is_finite(t: &Tensor) -> bool {
 
 
 pub fn softmax(t: &Tensor) -> Tensor {
-    //Need to implement
-    todo!()
+    let max_val = t.data().iter().copied().fold(f32::NEG_INFINITY, f32::max);
+    let exps: Vec<f32> = t
+        .data()
+        .iter()
+        .map(|&x| safe_exp(x - max_val))
+        .collect();
+
+    let sum = stable_sum(&exps);
+    let normalized: Vec<f32> = exps
+        .iter()
+        .map(|&x| safe_div(x, sum, 1e-8).unwrap_or(0.0))
+        .collect();
+
+    Tensor::new(normalized, t.shape().to_vec())
 }
 
+
 pub fn tensor_max(t: &Tensor) -> Option<f32> {
-    todo!()
+    t.data().iter().copied().max_by(|a, b| a.partial_cmp(b).unwrap())
 }
 
 pub fn normalize(t: &Tensor) -> Tensor {
-    todo!()
+    let max_val = t.data().iter().copied().fold(f32::NEG_INFINITY, f32::max);
+    let min_val = t.data().iter().copied().fold(f32::INFINITY, f32::min);
+    let range = max_val - min_val;
+
+    let normalized: Vec<f32> = t
+        .data()
+        .iter()
+        .map(|&x| safe_div(x - min_val, range, 1e-8).unwrap_or(0.0))
+        .collect();
+
+    Tensor::new(normalized, t.shape().to_vec())
 }
 
 #[cfg(test)]
