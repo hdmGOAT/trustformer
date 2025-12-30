@@ -1,3 +1,6 @@
+use crate::tensor::reductions;
+use crate::tensor::nn;
+
 #[derive(Clone)]
 pub struct Tensor {
     data: Vec<f32>,
@@ -46,6 +49,22 @@ impl Tensor {
                                 .map(|(i, s)| i * s)
                                 .sum();
         flat_index
+    }
+
+    pub fn is_finite(&self) -> bool {
+        reductions::is_finite(self)
+    }
+
+    pub fn max(&self) -> Option<f32> {
+        reductions::max(self)
+    }
+
+    pub fn softmax(&self) -> Tensor {
+        nn::softmax(self)
+    }
+
+    pub fn normalize(&self) -> Tensor {
+        nn::normalize(self)
     }
 
     pub fn set (&mut self, idx: &[usize], val: f32) {
@@ -162,5 +181,22 @@ mod tests {
         assert_eq!(tens.get(&[1,1,1]), 7.7);
         tens.set(&[0,0,0], 0.1);
         assert_eq!(tens.get(&[0,0,0]), 0.1);
+    }
+
+    #[test]
+    fn test_tensor_methods() {
+        let t = Tensor::new(vec![1.0, 2.0, 3.0], vec![3, 1]);
+        
+        assert!(t.is_finite());
+        
+        assert_eq!(t.max(), Some(3.0));
+        
+        let s = t.softmax();
+        let sum: f32 = s.data().iter().sum();
+        assert!((sum - 1.0).abs() < 1e-6);
+        
+        let n = t.normalize();
+        assert!((n.data()[0] - 0.0).abs() < 1e-6);
+        assert!((n.data()[2] - 1.0).abs() < 1e-6);
     }
 }
