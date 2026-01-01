@@ -5,6 +5,10 @@ pub mod tensor {
     pub mod nn;
     pub mod init;
 }
+pub mod tokenizer {
+    pub mod core;
+    pub mod training;
+}
 pub mod utils{
     pub mod float;
 }
