@@ -1,8 +1,13 @@
-use std::collections::HashMap;
+use std::{collections::HashMap};
 
 pub struct Tokenizer {
     vocab: HashMap<[usize; 2], usize>,
     rev_vocab: HashMap<usize, [usize; 2]>
+
+    // TODO: MAKE A REGEX SPLITTER
+    
+
+    // ADD SPECIAL TOKENS
 }
 
 impl Tokenizer {
@@ -14,16 +19,51 @@ impl Tokenizer {
     }
 
     pub fn encode(&self, text: &str) -> Vec<usize> {
-        todo!()
+        let mut tokens: Vec<usize> = text.as_bytes().iter().map(|x| *x as usize).collect();
+
+        let mut i = 0;
+        while i+1 < tokens.len() {
+            let pair = [tokens[i], tokens[i+1]];
+
+            if let Some(&merged) = self.vocab.get(&pair) {
+                tokens[i] = merged;
+                tokens.remove(i+1);
+
+                if i > 0 {i=i.saturating_sub(1);}
+            } else {
+                i += 1;
+            }
+        }
+
+        tokens
     }
 
+
     pub fn decode(&self, tokens: &[usize]) -> String {
-        todo!()
+        let mut output: Vec<u8> = Vec::new();
+
+        for &token in tokens {
+            self.expand(token, &mut output);
+        }
+
+        String::from_utf8(output).expect("invalid UTF-8")
     }
 
     fn expand(&self, token: usize, acc: &mut Vec<u8>) {
-        todo!()
+        let mut stack = vec![token];
+
+        while let Some(t) = stack.pop() {
+            if t <= 255 {
+                acc.push(t as u8);
+            } else {
+                let pair = self.rev_vocab.get(&t)
+                    .expect("token not found in rev_vocab");
+                stack.push(pair[1]);
+                stack.push(pair[0]);
+            }
+        }
     }
+
 }
 
 #[cfg(test)]
