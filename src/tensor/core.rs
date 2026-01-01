@@ -1,3 +1,6 @@
+use crate::tensor::init::n_tensor;
+use crate::tensor::init::rand_norm_tensor;
+use crate::tensor::init::rand_uni_tensor;
 use crate::tensor::reductions;
 use crate::tensor::nn;
 
@@ -22,6 +25,18 @@ impl Tensor {
 
     pub fn stride(&self) -> &[usize]{
         &self.stride
+    }
+
+    pub fn n_tensor (n: f32, shape: Vec<usize>) -> Tensor {
+        n_tensor(n, shape)
+    }
+
+    pub fn rand_norm (shape: Vec<usize>, mean: f32, std: f32) -> Tensor {
+        rand_norm_tensor(shape, mean, std)
+    }
+
+    pub fn rand_uni (shape: Vec<usize>, low: f32, high: f32) -> Tensor {
+        rand_uni_tensor(shape, low, high)
     }
 
     fn to_stride(shape: &[usize])-> Vec<usize>{
@@ -75,6 +90,17 @@ impl Tensor {
     pub fn get (&self, idx: &[usize]) -> f32{
         let flat_index = self.index(idx);
         self.data[flat_index]
+    }
+
+    pub fn row(&self, row: usize) -> Vec<f32> {
+        assert_eq!(self.shape.len(), 2, "row() requires a rank-2 tensor");
+        assert!(row < self.shape[0], "row index out of bounds");
+
+        let cols = self.shape[1];
+        let start = row * cols;
+        let end = start + cols;
+
+        self.data[start..end].to_vec()
     }
 }
 
@@ -198,5 +224,17 @@ mod tests {
         let n = t.normalize();
         assert!((n.data()[0] - 0.0).abs() < 1e-6);
         assert!((n.data()[2] - 1.0).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_row() {
+        let t = Tensor::new(
+            vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0],
+            vec![3, 2]
+        );
+
+        assert_eq!(t.row(0), vec![1.0, 2.0]);
+        assert_eq!(t.row(1), vec![3.0, 4.0]);
+        assert_eq!(t.row(2), vec![5.0, 6.0]);
     }
 }
