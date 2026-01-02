@@ -9,6 +9,11 @@ pub mod tokenizer {
     pub mod core;
     pub mod training;
 }
+pub mod transformer {
+    pub mod layernorm;
+    pub mod multihead;
+    pub mod block;
+}
 pub mod utils{
     pub mod float;
 }
