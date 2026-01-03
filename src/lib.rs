@@ -13,6 +13,7 @@ pub mod transformer {
     pub mod layernorm;
     pub mod multihead;
     pub mod block;
+    pub mod feedforward;
 }
 pub mod utils{
     pub mod float;

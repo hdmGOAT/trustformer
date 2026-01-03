@@ -143,6 +143,10 @@ impl Tensor {
         nn::softmax(self)
     }
 
+    pub fn softmax_axis(&self, axis: isize) -> Tensor {
+        nn::softmax_axis(self, axis)
+    }
+
     pub fn normalize(&self) -> Tensor {
         nn::normalize(self)
     }
