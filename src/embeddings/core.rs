@@ -17,7 +17,7 @@ impl Embeddings {
         let tok_emb = self.token.forward(tokens);
         let pos_emb = self.position.forward(tokens.len());
 
-        add(&tok_emb, &pos_emb)
+        add(&tok_emb, &pos_emb, false)
     }
 }
 
