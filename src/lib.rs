@@ -4,6 +4,7 @@ pub mod tensor {
     pub mod reductions;
     pub mod nn;
     pub mod init;
+    pub mod linear;
 }
 pub mod tokenizer {
     pub mod core;
@@ -22,4 +23,7 @@ pub mod embeddings {
     pub mod core;
     pub mod token;
     pub mod position;
+}
+pub mod model {
+    pub mod decoder;
 }

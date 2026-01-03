@@ -1,7 +1,7 @@
 use crate::tensor::core::Tensor;
 
 pub struct PositionEmbedding {
-    weight: Tensor
+    pub weight: Tensor
 }
 
 impl PositionEmbedding {

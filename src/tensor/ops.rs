@@ -54,7 +54,7 @@ where F: Fn(f32, f32) -> f32
         if dim_a != dim_b && dim_a != 1 && dim_b != 1 {
              panic!("Operands could not be broadcast together with shapes {:?} {:?}", a_shape, b_shape);
         }
-        shape.push(dim_a.max(dim_b));
+        shape.push(if dim_a == 1 { dim_b } else { dim_a });
     }
 
     let mut result = vec![0.0; shape.iter().product()];
