@@ -22,11 +22,11 @@ impl MultiHeadAttention {
         Self { num_heads, d_model, d_k, wq, wk, wv, wo}
     }
 
-    pub fn forward(&self, x: Tensor) -> Tensor {
+    pub fn forward(&self, x: &Tensor) -> Tensor {
         // PROJECT Q,K,V
-        let q = dot(&x, &self.wq);
-        let k = dot(&x, &self.wk);
-        let v = dot(&x, &self.wv);
+        let q = dot(x, &self.wq);
+        let k = dot(x, &self.wk);
+        let v = dot(x, &self.wv);
 
 
         // Split into heads
@@ -81,7 +81,7 @@ mod tests {
         // Input shape: [seq_len, d_model]
         let input = Tensor::rand_norm(vec![seq_len, d_model], 0.0, 1.0);
         
-        let output = mha.forward(input);
+        let output = mha.forward(&input);
         
         assert_eq!(output.shape(), &[seq_len, d_model]);
     }
@@ -96,7 +96,7 @@ mod tests {
         
         let input = Tensor::rand_norm(vec![seq_len, d_model], 0.0, 1.0);
         
-        let output = mha.forward(input);
+        let output = mha.forward(&input);
         
         assert_eq!(output.shape(), &[seq_len, d_model]);
     }
