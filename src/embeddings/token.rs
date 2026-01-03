@@ -1,7 +1,7 @@
 use crate::tensor::core::Tensor;
 
 pub struct TokenEmbedding {
-    weight: Tensor
+    pub weight: Tensor
 }
 
 impl TokenEmbedding {

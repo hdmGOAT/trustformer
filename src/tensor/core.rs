@@ -22,6 +22,10 @@ impl Tensor {
         &self.data
     }
 
+    pub fn data_mut(&mut self) -> &mut [f32]{
+        &mut self.data
+    }
+
 
     pub fn stride(&self) -> &[usize]{
         &self.stride
