@@ -4,7 +4,7 @@ pub struct Decoder {
     emb: Embeddings,
     blocks: Vec<TransformerBlock>,
     ln_f: LayerNorm,
-    lm_head: Linear
+    pub lm_head: Linear
 }
 
 impl Decoder {

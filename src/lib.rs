@@ -27,3 +27,6 @@ pub mod embeddings {
 pub mod model {
     pub mod decoder;
 }
+pub mod sampling {
+    pub mod generate;
+}

@@ -9,7 +9,7 @@ pub struct SpecialTokens {
 pub struct Tokenizer {
     vocab: HashMap<[usize; 2], usize>,
     rev_vocab: HashMap<usize, [usize; 2]>,
-    specials: SpecialTokens,
+    pub specials: SpecialTokens,
 }
 
 impl Tokenizer {
@@ -75,7 +75,7 @@ impl Tokenizer {
             }
         }
 
-        String::from_utf8(output).expect("invalid UTF-8")
+        String::from_utf8_lossy(&output).to_string()
     }
 
     fn expand(&self, token: usize, acc: &mut Vec<u8>) {
