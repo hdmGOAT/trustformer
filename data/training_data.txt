@@ -1,0 +1,4 @@
+Hello world! This is a test file for training the tokenizer.
+We are building a transformer model in Rust.
+Trustformer is a cool project name.
+The quick brown fox jumps over the lazy dog.
