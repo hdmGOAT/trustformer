@@ -16,6 +16,9 @@ pub mod transformer {
     pub mod block;
     pub mod feedforward;
 }
+pub mod training {
+    pub mod loss;
+}
 pub mod utils{
     pub mod float;
 }
