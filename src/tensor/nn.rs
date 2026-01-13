@@ -19,6 +19,20 @@ pub fn softmax(t: &Tensor) -> Tensor {
 
     Tensor::new(normalized, t.shape().to_vec())
 }
+pub fn log(t: &Tensor) -> Tensor {
+    let eps = 1e-8;
+
+    let data: Vec<f32> = t
+        .data()
+        .iter()
+        .map(|&x| {
+            let safe_x = if x < eps { eps } else { x };
+            safe_x.ln()
+        })
+        .collect();
+
+    Tensor::new(data, t.shape().to_vec())
+}
 
 pub fn softmax_axis(t: &Tensor, axis: isize) -> Tensor {
     let shape = t.shape();
@@ -89,6 +103,8 @@ pub fn gelu(t: &Tensor) -> Tensor {
 
 #[cfg(test)]
 mod tests {
+    use std::f32::consts::E;
+
     use super::*;
     use crate::utils::float::approx_eq;
 
@@ -268,5 +284,45 @@ mod tests {
         
         // GELU(-1) approx -0.1587
         assert!(approx_eq(g.data()[2], -0.1588, 1e-4));
+    }
+
+    #[test]
+    fn test_log_basic() {
+        let t = Tensor::new(vec![1.0, E], vec![2]);
+        let l = log(&t);
+
+        assert!(approx_eq(l.data()[0], 0.0, 1e-6)); // ln(1) = 0
+        assert!(approx_eq(l.data()[1], 1.0, 1e-6)); // ln(e) = 1
+    }
+
+    #[test]
+    fn test_log_preserves_shape() {
+        let t = Tensor::new(vec![0.2, 0.3, 0.5], vec![3, 1]);
+        let l = log(&t);
+
+        assert_eq!(l.shape(), &[3, 1]);
+    }
+
+    #[test]
+    fn test_log_numerical_safety_zero() {
+        let t = Tensor::new(vec![0.0, 1e-12], vec![2]);
+        let l = log(&t);
+
+        // Should not be -inf or NaN
+        for &val in l.data() {
+            assert!(!val.is_nan());
+            assert!(!val.is_infinite());
+        }
+    }
+
+    #[test]
+    fn test_log_after_softmax() {
+        let t = Tensor::new(vec![1.0, 2.0, 3.0], vec![1, 3]);
+        let s = softmax_axis(&t, 1);
+        let l = log(&s);
+
+        // log(softmax) should sum to something < 0
+        let sum: f32 = l.data().iter().sum();
+        assert!(sum < 0.0);
     }
 }

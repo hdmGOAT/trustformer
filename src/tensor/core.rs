@@ -147,6 +147,10 @@ impl Tensor {
         nn::softmax(self)
     }
 
+    pub fn log(&self) -> Tensor {
+        nn::log(self)
+    }
+
     pub fn softmax_axis(&self, axis: isize) -> Tensor {
         nn::softmax_axis(self, axis)
     }
